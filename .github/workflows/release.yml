@@ -21,6 +21,21 @@ jobs:
     - name: Install Rust bits
       run: rustup target add wasm32-wasi
 
+### BEGIN CUSTOM KLUDGE
+
+    - name: Trust Bindle server cert
+      run: |
+        mkdir certs
+        wget https://letsencrypt.org/certs/lets-encrypt-r3.pem -q -O ./certs/lets-encrypt-r3.pem
+        openssl x509 -in ./certs/lets-encrypt-r3.pem -inform PEM -out ./certs/lets-encrypt-r3.crt
+        wget https://letsencrypt.org/certs/lets-encrypt-e1.pem -q -O ./certs/lets-encrypt-e1.pem
+        openssl x509 -in ./certs/lets-encrypt-e1.pem -inform PEM -out ./certs/lets-encrypt-e1.crt
+        sudo cp ./certs/lets-encrypt-r3.crt /usr/local/share/ca-certificates/
+        sudo cp ./certs/lets-encrypt-e1.crt /usr/local/share/ca-certificates/
+        sudo update-ca-certificates
+
+### END CUSTOM KLUDGE
+
     - name: Set the release version (tag)
       if: startsWith(github.ref, 'refs/tags/v')
       shell: bash
