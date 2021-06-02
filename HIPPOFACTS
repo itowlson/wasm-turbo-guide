@@ -1,0 +1,8 @@
+[bindle]
+name = "wasm-turbo-guide"
+version = "0.1.0"
+authors = ["itowlson"]
+
+[[handler]]
+route = "/"
+name = "target/wasm32-wasi/release/wasm-turbo-guide.wasm"
